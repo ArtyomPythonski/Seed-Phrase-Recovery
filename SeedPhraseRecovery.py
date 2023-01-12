@@ -6,6 +6,7 @@ from hdwallet import BIP44HDWallet
 from hdwallet.symbols import ETH
 from list import seeds
 import itertools
+import threading
 
 # Functions
 def pop_menu(event):
@@ -21,13 +22,14 @@ def delete():
     whole_address_entry.delete(0, END)
 
 def stop():
-     root.destroy()
+    global running
+    running = False
 
 root = Tk()
 
 # Main Window Configuration (color, size, title, icon)
 background_color = "#F1F6F5"
-icon = PhotoImage(file="./seed_recovery.png") # if it doesn't work put full path name /home/user/.....
+icon = PhotoImage(file="/home/shereshevsky/Desktop/SeedRecovery/seed_recovery.png") # if it doesn't work put full path name /home/user/.....
 root.iconphoto(False, icon)
 root.title("Seed Phrase Recovery")
 root.geometry("860x540")
@@ -124,6 +126,9 @@ buttons_frame.grid(row=4, column=0)
 
 # Start Button
 def MyClick():
+
+    global running
+    running = True
     # getting words from Seed input and deleting additional spaces if present
     seed_phrase = (words.get().strip())
 
@@ -146,6 +151,9 @@ def MyClick():
             t.update()
             scrollbar.update()
             counter += 1
+            #Stop Button
+            if not running:
+                break
 
             try:
                 bip44_hdwallet: BIP44HDWallet = BIP44HDWallet(
@@ -196,6 +204,9 @@ def MyClick():
             t.update()
             scrollbar.update()
             counter += 1
+            #Stop Button
+            if not running:
+                break
 
             try:
                 bip44_hdwallet: BIP44HDWallet = BIP44HDWallet(
@@ -246,6 +257,9 @@ def MyClick():
             scrollbar.update()
             print(counter, seed3)
             counter += 1
+            #Stop Button
+            if not running:
+                break
 
             try:
                 bip44_hdwallet: BIP44HDWallet = BIP44HDWallet(
@@ -297,6 +311,9 @@ def MyClick():
             scrollbar.update()
             print(counter, seed4)
             counter += 1
+            #Stop Button
+            if not running:
+                break
 
             try:
                 bip44_hdwallet: BIP44HDWallet = BIP44HDWallet(
@@ -349,6 +366,9 @@ def MyClick():
             scrollbar.update()
             print(counter, seed5)
             counter += 1
+            #Stop Button
+            if not running:
+                break
 
             try:
                 bip44_hdwallet: BIP44HDWallet = BIP44HDWallet(
@@ -402,6 +422,9 @@ def MyClick():
             scrollbar.update()
             print(counter, seed6)
             counter += 1
+            #Stop Button
+            if not running:
+                break
 
             try:
                 bip44_hdwallet: BIP44HDWallet = BIP44HDWallet(
@@ -455,6 +478,9 @@ def MyClick():
             scrollbar.update()
             print(counter, seed7)
             counter += 1
+            #Stop Button
+            if not running:
+                break
 
             try:
                 bip44_hdwallet: BIP44HDWallet = BIP44HDWallet(
@@ -509,6 +535,9 @@ def MyClick():
             scrollbar.update()
             print(counter, seed8)
             counter += 1
+            #Stop Button
+            if not running:
+                break
 
             try:
                 bip44_hdwallet: BIP44HDWallet = BIP44HDWallet(
@@ -564,6 +593,9 @@ def MyClick():
             scrollbar.update()
             print(counter, seed9)
             counter += 1
+            #Stop Button
+            if not running:
+                break
 
             try:
                 bip44_hdwallet: BIP44HDWallet = BIP44HDWallet(
@@ -620,6 +652,9 @@ def MyClick():
             scrollbar.update()
             print(counter, seed10)
             counter += 1
+            #Stop Button
+            if not running:
+                break
 
             try:
                 bip44_hdwallet: BIP44HDWallet = BIP44HDWallet(
@@ -677,6 +712,9 @@ def MyClick():
             scrollbar.update()
             print(counter, seed11)
             counter += 1
+            #Stop Button
+            if not running:
+                break
 
             try:
                 bip44_hdwallet: BIP44HDWallet = BIP44HDWallet(
@@ -735,6 +773,9 @@ def MyClick():
             scrollbar.update()
             print(counter, seed12)
             counter += 1
+            #Stop Button
+            if not running:
+                break
 
             try:
                 bip44_hdwallet: BIP44HDWallet = BIP44HDWallet(
@@ -772,7 +813,7 @@ def MyClick():
                 continue
 
 # Start Button
-start_button = Button(buttons_frame, bg=background_color, fg="#0081C9", activebackground="#F2F2F2", activeforeground="#0081C9", text="start", command=MyClick)  # state=DISABLED <- Kada se doda ovo, dugme ne moze da se klikne
+start_button = Button(buttons_frame, bg=background_color, fg="#0081C9", activebackground="#F2F2F2", activeforeground="#0081C9", text="start", command=lambda: threading.Thread(target=MyClick).start())  # state=DISABLED <- Kada se doda ovo, dugme ne moze da se klikne
 start_button.grid(row=0, column=0, padx=5, pady=0, sticky="EN")
 # Stop Button
 stop_button = Button(buttons_frame, bg=background_color, fg="#0081C9", activebackground="#F2F2F2", activeforeground="#0081C9", text="stop", command=stop)
